@@ -1,0 +1,1 @@
+## Installation```stMetacello new	repository: '';	baseline: 'TOptimizer';	load```## Load Lepiter				After installing with Metacello, you will be able to execute```#BaselineOfTOptimizer asClass loadLepiter```
