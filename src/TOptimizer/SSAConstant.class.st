@@ -27,15 +27,25 @@ SSAConstant >> assignmentErrorText [
 ]
 
 { #category : #accessing }
+SSAConstant >> bar [
+	<gtExample>
+	self name: #bar value: SSAConstant new foo1;
+		assert: self asScope size equals: 3.
+]
+
+{ #category : #accessing }
 SSAConstant >> foo [
 	<gtExample>
-	self name: #foo; assert: name equals: #foo; assert: value isNil; assert: version equals: 1
+	self name: #foo;
+		assert: name equals: #foo;
+		assert:value isNil;
+		assert: version equals: 1
 ]
 
 { #category : #accessing }
 SSAConstant >> foo1 [
 	<gtExample>
-	self foo value: 1; assert: value equals: 1
+	^ self foo value: 1; assert: value equals: 1
 ]
 
 { #category : #accessing }
@@ -47,7 +57,7 @@ SSAConstant >> gtTreeFor: aView [
 		painting: [:m | self valueTree: m]
 ]
 
-{ #category : #initialize }
+{ #category : #accessing }
 SSAConstant >> name: aName [
 	self name: aName value: nil 
 ]
@@ -67,7 +77,7 @@ SSAConstant >> name: aName value: aValue version: anInteger [
 { #category : #accessing }
 SSAConstant >> printOn: aStream [
 	super printOn: aStream.
-	aStream space; nextPutAll: name
+	aStream space; nextPutAll: (name ifNil: [''] ifNotNil: [name])
 ]
 
 { #category : #accessing }

@@ -6,3 +6,8 @@ Class {
 	],
 	#category : #TOptimizer
 }
+
+{ #category : #accessing }
+SSAValue >> name [
+	^name
+]
