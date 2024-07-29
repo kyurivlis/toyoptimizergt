@@ -9,6 +9,19 @@ Class {
 }
 
 { #category : #accessing }
+SSAConstant >> asScope [
+	^OrderedCollection streamContents: [:ws | self asScope: ws]
+]
+
+{ #category : #accessing }
+SSAConstant >> asScope: writeStream [
+	writeStream nextPut: self.
+	value isSSAValue 
+		ifTrue: [value asScope: writeStream]
+		ifFalse: [writeStream nextPut: value]
+]
+
+{ #category : #accessing }
 SSAConstant >> assignmentErrorText [
 	^ 'second dynamic assignment'
 ]
@@ -23,6 +36,15 @@ SSAConstant >> foo [
 SSAConstant >> foo1 [
 	<gtExample>
 	self foo value: 1; assert: value equals: 1
+]
+
+{ #category : #accessing }
+SSAConstant >> gtTreeFor: aView [
+	<gtView>
+	^ aView mondrian
+		title: 'Tree';
+		priority: 1;
+		painting: [:m | self valueTree: m]
 ]
 
 { #category : #initialize }
@@ -61,4 +83,9 @@ SSAConstant >> secondAssignment [
 SSAConstant >> value: aValue [
 	value isNotNil ifTrue: [self error: self assignmentErrorText].
 	value:= aValue
+]
+
+{ #category : #accessing }
+SSAConstant >> valueTree: m [ 
+	self asScope
 ]
