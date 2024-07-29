@@ -9,6 +9,17 @@ Class {
 }
 
 { #category : #accessing }
+SSAConstant >> asListOfEdges [
+	OrderedCollection streamContents: [:ws | self asListOfEdges: ws]
+]
+
+{ #category : #accessing }
+SSAConstant >> asListOfEdges: writeStream [
+	writeStream put: {self . value}.
+	value isSSAValue ifTrue: [value asListOfEdges: writeStream]
+]
+
+{ #category : #accessing }
 SSAConstant >> asScope [
 	^OrderedCollection streamContents: [:ws | self asScope: ws]
 ]
