@@ -9,14 +9,15 @@ Class {
 }
 
 { #category : #accessing }
-SSAConstant >> asListOfEdges [
-	OrderedCollection streamContents: [:ws | self asListOfEdges: ws]
+SSAConstant >> asEdges [
+	^ self asEdges: Dictionary new
 ]
 
 { #category : #accessing }
-SSAConstant >> asListOfEdges: writeStream [
-	writeStream put: {self . value}.
-	value isSSAValue ifTrue: [value asListOfEdges: writeStream]
+SSAConstant >> asEdges: dict [
+	dict at: self put: value.
+	value isSSAValue ifTrue: [value asEdges: dict].
+	^dict
 ]
 
 { #category : #accessing }
@@ -101,6 +102,11 @@ SSAConstant >> secondAssignment [
 ]
 
 { #category : #accessing }
+SSAConstant >> value [
+	^value
+]
+
+{ #category : #accessing }
 SSAConstant >> value: aValue [
 	value isNotNil ifTrue: [self error: self assignmentErrorText].
 	value:= aValue
@@ -108,5 +114,13 @@ SSAConstant >> value: aValue [
 
 { #category : #accessing }
 SSAConstant >> valueTree: m [ 
-	self asScope
+	m nodes with: self asScope.
+	m edges connectFrom: [:x| x isSSAValue ifTrue: [x value]] to: [:x | x].
+	m layout tree.
+	^m
+]
+
+{ #category : #accessing }
+SSAConstant >> valueTreeConnectFrom: x [
+	x isSSAValue ifTrue: [^(x value)] ifFalse: [^nil]
 ]
