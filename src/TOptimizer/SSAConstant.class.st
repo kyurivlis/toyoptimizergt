@@ -87,6 +87,14 @@ SSAConstant >> name: aName value: aValue version: anInteger [
 ]
 
 { #category : #accessing }
+SSAConstant >> nodeShape: x [
+^BlTextElement new
+	text: (x isSSAValue
+		ifTrue: [x name]
+		ifFalse: [x]) asRopedText
+]
+
+{ #category : #accessing }
 SSAConstant >> printOn: aStream [
 	super printOn: aStream.
 	aStream space; nextPutAll: (name ifNil: [''] ifNotNil: [name])
@@ -113,11 +121,16 @@ SSAConstant >> value: aValue [
 ]
 
 { #category : #accessing }
-SSAConstant >> valueTree: m [ 
-	m nodes with: self asScope.
-	m edges connectFrom: [:x| x isSSAValue ifTrue: [x value]] to: [:x | x].
+SSAConstant >> valueTree: m [
+	m nodes
+		shape: [:x | self nodeShape: x];
+		with: self asScope.
+	m edges
+		fromCenterBottom;
+		toCenterTop;
+	    connectFrom: [ :x | x isSSAValue ifTrue: [ x value ] ] to: [ :x | x ].
 	m layout tree.
-	^m
+	^ m
 ]
 
 { #category : #accessing }
