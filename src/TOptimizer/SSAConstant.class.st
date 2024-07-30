@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #accessing }
+SSAConstant >> addVal: scope [
+	self addVal: value scope: scope
+]
+
+{ #category : #accessing }
 SSAConstant >> asEdges [
 	^ self asEdges: Dictionary new
 ]
@@ -18,19 +23,6 @@ SSAConstant >> asEdges: dict [
 	dict at: self put: value.
 	value isSSAValue ifTrue: [value asEdges: dict].
 	^dict
-]
-
-{ #category : #accessing }
-SSAConstant >> asScope [
-	^OrderedCollection streamContents: [:ws | self asScope: ws]
-]
-
-{ #category : #accessing }
-SSAConstant >> asScope: writeStream [
-	writeStream nextPut: self.
-	value isSSAValue 
-		ifTrue: [value asScope: writeStream]
-		ifFalse: [writeStream nextPut: value]
 ]
 
 { #category : #accessing }
